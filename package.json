@@ -1,0 +1,21 @@
+{
+  "name": "cmd-chatbot",
+  "version": "1.0.0",
+  "description": "Simple command line chat bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "chat",
+    "bot",
+    "cmd",
+    "command",
+    "line"
+  ],
+  "author": "Cristian Colorado",
+  "license": "ISC",
+  "dependencies": {
+    "xregexp": "3.1.1"
+  }
+}
