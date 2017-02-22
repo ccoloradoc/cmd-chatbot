@@ -16,6 +16,9 @@
   "author": "Cristian Colorado",
   "license": "ISC",
   "dependencies": {
+    "promise": "^7.1.1",
+    "request": "^2.79.0",
+    "request-promise": "^4.1.1",
     "xregexp": "3.1.1"
   }
 }
