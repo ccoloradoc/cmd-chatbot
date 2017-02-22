@@ -8,6 +8,7 @@ const rl = readline.createInterface({
 
 const matcher = require('./matcher');
 const weather = require('./weather');
+const parser = require('./parser');
 
 rl.setPrompt('>');
 rl.prompt();
@@ -25,10 +26,14 @@ rl.on('line', (input) => {
         break;
       case 'CurrentWeather':
         console.log('Oh, let me check...');
-        weather.currentWeather(data.entities.city).then(function(weatherData) {
-          console.log(`The weather in ${data.entities.city} is  ${weatherData.weather} and temperature is ${weatherData.temp} C`);
-          rl.prompt();
-        });
+        weather.currentWeather(data.entities.city)
+          .then(weatherData => {
+            console.log(parser(weatherData));
+            rl.prompt();
+          })
+          .catch(err => {
+            console.log('Sorry, I could not get a response from Open Weather :()');
+          });
         break;
       case 'Thanks':
         console.log('You are welcome! :)')
