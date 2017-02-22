@@ -28,7 +28,7 @@ rl.on('line', (input) => {
         console.log('Oh, let me check...');
         weather.currentWeather(data.entities.city)
           .then(weatherData => {
-            console.log(parser(weatherData));
+            console.log(parser.parseCurrentWeather(weatherData));
             rl.prompt();
           })
           .catch(err => {
@@ -36,6 +36,19 @@ rl.on('line', (input) => {
             rl.prompt();
           });
         break;
+        case 'WeatherForecast':
+          console.log('Oh, let me check that for you...');
+          weather.weatherForecast(data.entities.city)
+            .then(weatherData => {
+              console.log('>>' + parser.parseWeatherForecast(weatherData, data.entities.time));
+              rl.prompt();
+            })
+            .catch(err => {
+              console.log(err);
+              console.log('Sorry, I could not get a response from Open Weather :(');
+              rl.prompt();
+            });
+          break;
       case 'Thanks':
         console.log('You are welcome! :)')
         rl.prompt();

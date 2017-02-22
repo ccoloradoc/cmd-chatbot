@@ -18,7 +18,7 @@ let getFeel = temp => {
   }
 }
 
-let parse = (data) => {
+let parseCurrentWeather = (data) => {
   if(data) {
     let temperature = data.main.temp;
     let weather = data.weather[0].description;
@@ -27,4 +27,51 @@ let parse = (data) => {
   }
 };
 
-module.exports = parse;
+let normalizeUnixDate = (timestamp) => {
+    var date = new Date(timestamp);
+    date.setHours(0,0,0,0);
+    return date.getTime() / 1000;
+}
+
+let calculateDate = (str) => {
+  var today = new Date().getTime();
+  switch (str) {
+    case 'tomorrow':
+      today += 86400000;
+      break;
+    case 'day after tomorrow':
+      today += (2 * 86400000);
+      break;
+  }
+
+  return normalizeUnixDate(today);
+}
+
+let retriveVerb = (time) => {
+  switch (time) {
+    case 'today':
+      return 'is'
+    case 'tomorrow':
+    case 'day after tomorrow':
+      return 'will be';
+  }
+}
+
+let parseWeatherForecast = (data, time) => {
+  var day = calculateDate(time);
+  let location = data.city.name;
+  for(var i in data.list) {
+    var forecast = data.list[i];
+    var forecastDate = normalizeUnixDate(forecast.dt * 1000);
+    if(forecastDate == day) {
+      let temperature = forecast.temp.day;
+      let weather = forecast.weather[0].description;
+      return `${time} ${retriveVerb(time)} ${weather.blue} in ${location.bold}. It ${retriveVerb(time)} ${getFeel(temperature).blue} with temperature of ${temperature.toString().red} °C`;
+    }
+  }
+}
+
+module.exports = {
+  parseCurrentWeather: parseCurrentWeather,
+  parseWeatherForecast: parseWeatherForecast
+};

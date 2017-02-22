@@ -1,9 +1,9 @@
 'use strict';
 
-var rp = require('request-promise');
+const rp = require('request-promise');
 
-var options = {
-    uri: 'http://api.openweathermap.org/data/2.5/weather',
+let options = {
+    uri: 'http://api.openweathermap.org/data/2.5/',
     qs: {
       appid: '126f2df58945c7b8e8282c4930248b9c',
       units: 'metric'
@@ -13,10 +13,19 @@ var options = {
 };
 
 let currentWeather = (city, cb) => {
+  options.uri += 'weather';
   options.qs.q = city;
   return rp(options);
 }
 
+let weatherForecast = (city, day) => {
+  options.uri += 'forecast/daily';
+  options.qs.q = city;
+  options.qs.cnt = 5;
+  return rp(options);
+}
+
 module.exports = {
-  currentWeather: currentWeather
+  currentWeather: currentWeather,
+  weatherForecast: weatherForecast
 };
