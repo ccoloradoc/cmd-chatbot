@@ -32,7 +32,8 @@ rl.on('line', (input) => {
             rl.prompt();
           })
           .catch(err => {
-            console.log('Sorry, I could not get a response from Open Weather :()');
+            console.log('Sorry, I could not get a response from Open Weather :(');
+            rl.prompt();
           });
         break;
       case 'Thanks':
