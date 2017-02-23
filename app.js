@@ -10,7 +10,7 @@ const matcher = require('./matcher');
 const weather = require('./weather');
 const parser = require('./parser');
 
-rl.setPrompt('>');
+rl.setPrompt('> ');
 rl.prompt();
 
 rl.on('line', (input) => {
@@ -32,6 +32,7 @@ rl.on('line', (input) => {
             rl.prompt();
           })
           .catch(err => {
+            console.log(err);
             console.log('Sorry, I could not get a response from Open Weather :(');
             rl.prompt();
           });
@@ -40,11 +41,10 @@ rl.on('line', (input) => {
           console.log('Oh, let me check that for you...');
           weather.weatherForecast(data.entities.city)
             .then(weatherData => {
-              console.log('>>' + parser.parseWeatherForecast(weatherData, data.entities.time));
+              console.log(parser.parseWeatherForecast(weatherData, data.entities.time));
               rl.prompt();
             })
             .catch(err => {
-              console.log(err);
               console.log('Sorry, I could not get a response from Open Weather :(');
               rl.prompt();
             });

@@ -53,21 +53,22 @@ let retriveVerb = (time) => {
       return 'is'
     case 'tomorrow':
     case 'day after tomorrow':
-      return 'will be';
+      return 'will have';
   }
 }
 
 let parseWeatherForecast = (data, time) => {
   var day = calculateDate(time);
   let location = data.city.name;
-  for(var i in data.list) {
-    var forecast = data.list[i];
-    var forecastDate = normalizeUnixDate(forecast.dt * 1000);
-    if(forecastDate == day) {
-      let temperature = forecast.temp.day;
-      let weather = forecast.weather[0].description;
-      return `${time} ${retriveVerb(time)} ${weather.blue} in ${location.bold}. It ${retriveVerb(time)} ${getFeel(temperature).blue} with temperature of ${temperature.toString().red} °C`;
-    }
+
+  let forecast = data.list.filter(item => {
+    return normalizeUnixDate(item.dt * 1000) == day;
+  });
+
+  if(forecast.length > 0) {
+    let temperature = forecast[0].temp.day;
+    let weather = forecast[0].weather[0].description;
+    return `${time}, We ${retriveVerb(time)} ${weather.blue} in ${location.bold}. It ${retriveVerb(time)} ${getFeel(temperature).blue} with temperature of ${temperature.toString().red} °C`;
   }
 }
 
